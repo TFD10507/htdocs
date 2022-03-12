@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- <script>
+        // 只要執行到這個function就會連結到index.php
+        function dosubmit() {
+            var Ah = document.getElementById("Ah").value;
+            var Bh = document.getElementById("Bh").value;
+            var Ch = document.getElementById("Ch").value;
+            location.href = "index2.php?height=" + Ah + Bh + Ch;
+        }
+    </script> -->
+
+</head>
+<body>
+    <form method="get" action="index2.php">
+        A身高：
+        <input type="text" id="Ah" name="height[]">
+        <br>
+        B身高：
+        <input type="text" id="Bh" name="height[]">
+        <br>
+        C身高：
+        <input type="text" id="Ch" name="height[]" >
+        <br>
+        <input type="submit" value="送出">
+    </form>
+</body>
+</html>

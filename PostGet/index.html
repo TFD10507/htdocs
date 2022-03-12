@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<script>
+    // 只要執行到這個function就會連結到index.php
+    function dosubmit() {
+        var account = document.getElementById("account").value;
+        var account2 = document.getElementById("account2").value;
+        location.href = "index.php?account=" + account + "&account2=" + account2;
+    }
+</script>
+
+
+<body>
+
+    <!-- ========= get ======== -->
+    <!-- <form method="get" action="index.php">
+        帳號:
+        <input type="text" id="account" name="account" />
+
+        帳號2:
+        <input type="text" id="account2" name="account2" />
+        <input type="submit" value="送出" onclick="dosubmit()" />
+    </form> -->
+
+    <!-- ========= post ========= -->
+    <!-- <form method="post" action="index.php">
+        帳號:
+        <input type="text" name="account" />
+        <input type="submit" value="送出" />
+    </form> -->
+
+
+    <!-- 練習 ============================ -->
+    <form method="get" action="index.php">
+        姓名：
+        <input type="text" id="name" name="name">
+        <br>
+        性別：
+        <input type="radio" id="male" name="sex" value="男">
+        <label for="male">男</label>
+        <input type="radio" id="female" name="sex" value="女">
+        <label for="female">女</label>
+        <br>
+        交通工具：
+        <input type="checkbox" id="car" name="car[]" value="汽車">
+        <label for="car">汽車</label>
+        <input type="checkbox" id="scooter" name="car[]" value="機車">
+        <label for="scooter">機車</label>
+        <br>
+        <input type="submit" value="送出">
+    </form>
+
+</body>
+
+</html>
