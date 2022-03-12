@@ -14,9 +14,10 @@
        //抓出全部且依照順序封裝成一個二維陣列
        $data = $statement->fetchAll();
 
-       // print_r($data);
+       // **php會變成資料提供者，提供json格式傳出去
+       // echo json_encode($data);
 
-       // var_dump($data);
+       // **之後就不用在php跑以下迴圈，讓前端去跑迴圈就好傳出值就好
 
        //將二維陣列取出顯示其值
        foreach($data as $index => $row){

@@ -1,5 +1,7 @@
 <?php
     //判斷是否上傳成功
+    // html的form裡的name取甚麼，這裡的就要取甚麼
+    // 這裡的為file
     if($_FILES["file"]["error"] > 0){
         echo "上傳失敗: 錯誤代碼".$_FILES["file"]["error"];
     }else{
@@ -10,7 +12,7 @@
         $fileSize = $_FILES["file"]["size"];    //檔案尺寸
         //=======================================================
 
-        //Web根目錄真實路徑
+        //取得Web根目錄真實路徑
         $ServerRoot = $_SERVER["DOCUMENT_ROOT"];
         
         //檔案最終存放位置
