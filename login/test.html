@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <label for="">Username: </label>
+    <input id="username">
+    <br>
+    <br>
+    <label for="">Password: </label>
+    <input id="password">
+    <br>
+    <br>
+    <button>Login</button>
+    <div></div>
+    <script>
+        const url = 'test.php';
+        const username = document.querySelector('#username');
+        const password = document.querySelector('#password');
+        const div = document.querySelector('div');
+        document.querySelector('button').addEventListener('click', () => {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username.value,
+                    password: password.value,
+                })
+            })
+                .then(resp => resp.json()) //回應如果永遠都是json都是這樣寫
+                .then(body => {
+                    // const { successful, message, nickname } = body;
+                    // div.textContent = successful ? nickname : message; //成功的話給nickname錯的話給錯誤訊息
+
+                    const { successful, NICKNAME } = body;
+                    if (successful) {
+                        div.textContent = NICKNAME;
+                    } else {
+                        div.textContent = '';
+                    }
+
+                }); //會變的是這裡
+        });
+    </script>
+</body>
+
+</html>

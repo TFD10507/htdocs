@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input id="username" type="file">
+    <br>
+    <br>
+    <img src="" alt="">
+    <button>Submit</button>
+
+    <script>
+        const input = document.querySelector('input');
+        const img = document.querySelector('img');
+        input.addEventListener('change', () => {
+            const file = input.files[0];
+            if (file) {
+                img.src = URL.createObjectURL(file);
+            }
+
+        })
+
+        const url = 'http://10.2.0.84:8080/spring-exercise/test/fileUpload';
+        document.querySelector('button').addEventListener('click', () => {
+            const file = input.files[0];
+            const fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                const base64Str = btoa(e.target.result);
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fileName: file.name,
+                        file: base64Str
+                    })
+                }).then(resp => resp.json())
+
+            };
+            fileReader.readAsBinaryString(file);
+        });
+
+    </script>
+</body>
+
+</html>
