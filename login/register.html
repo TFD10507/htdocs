@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+   	<style>
+        button{
+            border: 0;
+            background-color: cadetblue;
+            color: white;
+            cursor: pointer;
+            width: 100px;
+            height: 40px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label for="">帳號：</label>
+        <input type="text" name="" id="username">
+        <br>
+        <label for="">密碼：</label>
+        <input type="text" name="" id="password">
+        <br>
+        <label for="">確認密碼：</label>
+        <input type="text" name="" id="">
+        <br>
+        <label for="">暱稱：</label>
+        <input type="text" name="" id="nickname">
+        <br>
+        <button type="button">註冊</button>
+    </form>
+    
+    <script>
+        const url = 'php/register.php';
+        const username = document.querySelector('#username');
+        const password = document.querySelector('#password');
+        const nickname = document.querySelector('#nickname');
+
+        document.querySelector('button').addEventListener('click', () => {
+            fetch(url, {
+                method: 'POST', //POST不會將資料顯示在網址上
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username.value,
+                    password: password.value,
+                    nickname: nickname.value,
+                }),
+            })
+            .then(resp => resp.json())
+         });
+    </script>
+    
+</body>
+</html>
+

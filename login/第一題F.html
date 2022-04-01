@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        referrerpolicy="no-referrer"></script>
+    <title>Document</title>
+    <style>
+        table {
+            width: 100%;
+            border: 1px black solid;
+        }
+
+        th {
+            border: 1px red solid;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>E-mail</th>
+                <th>Phone</th>
+                <th>Website</th>
+                <th>Company</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            
+        </tbody>
+    </table>
+
+    <script>
+
+        // 第一題訪問網址
+        const url = 'https://jsonplaceholder.typicode.com/users';
+
+        $(document).ready(function () {
+            fetch(url, {
+                mode: "cors"
+            })
+            // 轉JSON格式
+            .then(resp => resp.json())
+            .then(body => {
+                console.log(body)
+                for(var i = 0;i< body.length; i++){
+                    $('#tbody').append(
+                        `<tr>
+                            <th>${body[i].id}</th>
+                            <th>${body[i].name}</th>
+                            <th>${body[i].username}</th>
+                            <th>${body[i].email}</th>
+                            <th>${body[i].phone}</th>
+                            <th>${body[i].website}</th>
+                            // 底下命名ID    ex: (comp_1)   . (addr_1)   ...(總共5個字)
+                            <th><button id='comp_${body[i].id}'>show</button></th>
+                            <th><button id='addr_${body[i].id}'>show</button></th>
+                        </tr>`
+                    )
+                }
+
+                $('button').click(function(){
+                    var id = this.id;    //點到的那個ID  
+                    newid = id.substr(5) -1; //利用body要減1       (抓ID最後一個數字,)  (從0開始算,所以長度-1)
+                    
+                    //判斷此次點擊試點公司還是地址，如果是c代表公司，如果是a代表地址
+                    var first = id.substr(0,1);   //  抓 ID 第一個字
+
+                    // alert(first);
+                    if(first == 'c'){   // 如果第一個 ID 字 是 C
+                        alert('name: ' + body[newid]['company']['name'] + '\n' + 'catchPhrase: ' + body[newid]['company']['catchPhrase'] + '\n' + 'bs: ' + body[newid]['company']['bs'])
+                    }else{
+                        alert('street: ' + body[newid]['address']['street'] + '\n' + 'suite: ' + body[newid]['address']['suite'] + '\n' + 'city: ' + body[newid]['address']['city'] + '\n' + 'zipcode: ' + body[newid]['address']['zipcode'] + '\n' + 'geo: (' + body[newid]['address']['geo']['lat'] + ' ,' + body[newid]['address']['geo']['lng'] + ')')
+                    }
+                })
+            });         
+        });
+    </script>
+</body>
+
+</html>

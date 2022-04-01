@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>download</title>
+</head>
+
+<body>
+    <button>Download</button>
+    <br>
+    <img>
+
+    <script>
+        const img = document.querySelector('img');
+        const url = 'http://10.2.0.84:8080/spring-exercise/test/fileDownload';
+        document.querySelector('button').addEventListener("click", () => {
+            fetch(url ,{
+                mode: 'cors'
+            })
+                .then(resp => resp.json())
+                .then(body => {
+                    // 0.取得後端回應的檔案的(Base64)
+                    const base64Str = body.file;
+                    // 1.Base64解碼成位元組字串
+                    const binStr = atob(base64Str);
+                    // 2.將 位元組字串 轉成 Uint8Array
+                    let len = binStr.length;
+                    const uint8Array = new Uint8Array(len);
+                    while (len--) {
+                        // charCodeAt() 方法返回 0 到 65535 之間的整數
+                        uint8Array[len] = binStr.charCodeAt(len);
+                    }
+                    // 3.將 Uint8Array 轉成 Blob 物件
+                    const blob = new Blob([uint8Array]);
+
+                    img.src = URL.createObjectURL(blob);
+
+                    // 創造a標籤
+                    // const a = document.createElement("a");
+                    // a.href = URL.createObjectURL(blob);
+                    // a.click();
+                });
+        });
+
+
+    </script>
+</body>
+
+</html>

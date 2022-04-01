@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise13</title>
+    <style>
+        td {
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Username</td>
+                <td>E-mail</td>
+                <td>Phone</td>
+                <td>Website</td>
+                <td>Company</td>
+                <td>Address</td>
+            </tr>
+        </thead>
+        <tbody id="a"></tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        const url = 'https://jsonplaceholder.typicode.com/users';
+
+        fetch(url)
+            .then(resp =>  resp.json())
+            .then(data => {
+                console.log(data);
+                for (let i = 0; i < data.length; i++) {
+                    $('#a').append(`
+                        <tr>
+                            <td>${data[i].id}</td>
+                            <td>${data[i].name}</td>
+                            <td>${data[i].username}</td>
+                            <td>${data[i].email}</td>
+                            <td>${data[i].phone}</td>
+                            <td>${data[i].website}</td>
+                            <td><button class="company" value="${i}">show</button></td>
+                            <td><button class="address" value="${i}">show</button></td>
+                        </tr>
+                    `)
+                }
+                $(document).on('click',function(e){
+                    // console.log(this);
+                    // console.log(data);
+                    for(let i = 0; i < data.length; i++){
+                        // console.log($(e.target).val())
+
+                        if($(e.target).val() == i && $(e.target).hasClass('company')){
+                            console.log("a")
+                            alert(`
+                                name:${data[i].company.name}\n
+                                catchPhrase:${data[i].company.catchPhrase}\n
+                                bs:${data[i].company.bs}
+                            `);
+                        }
+                        if($(e.target).val() == i && $(e.target).hasClass('address')){
+                            alert(`
+                                street:${data[i].address.street}\n
+                                suite:${data[i].address.suite}\n
+                                city:${data[i].address.city}\n
+                                zipcode:${data[i].address.zipcode}\n
+                                geo:${data[i].address.geo}\n
+                            `);
+                        }
+                    }
+                })
+            })
+    </script>
+</body>
+
+</html>
