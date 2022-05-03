@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    1.請設計一網頁，對 https://jsonplaceholder.typicode.com/users 發出請求，並顯示在網頁上，執行結果如下..
+        點擊Company欄位的按鈕show，須以alert()顯示公司資訊，EX..
+        點擊Address欄位的按鈕show，須以alert()顯示地址資訊，EX..
+        提示: alert()，可參考 Ch12 BOM 與 DOM#BOM常用API
+-->
+
+<body>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>E-mail</th>
+                <th>Phone</th>
+                <th>Website</th>
+                <th>Company</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script>
+        const tbody = document.querySelector('tbody');
+        const url = 'https://jsonplaceholder.typicode.com/users';
+        fetch(url)
+            .then(resp => resp.json())
+            .then(users => {
+                for (let user of users) {
+                    const tr = document.createElement('tr');
+                    let td = document.createElement('td');
+                    td.textContent = user.id;
+                    tr.append(td);
+                    td = document.createElement('td');
+                    td.textContent = user.name;
+                    tr.append(td);
+                    td = document.createElement('td');
+                    td.textContent = user.username;
+                    tr.append(td);
+                    td = document.createElement('td');
+                    td.textContent = user.email;
+                    tr.append(td);
+                    td = document.createElement('td');
+                    td.textContent = user.phone;
+                    tr.append(td);
+                    td = document.createElement('td');
+                    td.textContent = user.website;
+                    tr.append(td);
+                    td = document.createElement('td');
+                    td.append(getButton(user.company));
+                    tr.append(td);
+                    td = document.createElement('td');
+                    td.append(getButton(user.address));
+                    tr.append(td);
+                    tbody.append(tr);
+                }
+            });
+
+        function getButton(data) {
+            const button = document.createElement('button');
+            button.textContent = 'show';
+            button.addEventListener('click', () => {
+                let text = '';
+                for (let key in data) {
+                    const value = data[key];
+                    if (key === 'geo') {
+                        text += `geo: (${value.lat}, ${value.lng})
+`;
+                    } else {
+                        text += `${key}: ${value}
+`;
+                    }
+                }
+                alert(text);
+            });
+            return button;
+        }
+    </script>
+</body>
+
+</html>

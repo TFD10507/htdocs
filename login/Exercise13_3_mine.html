@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise13</title>
+    <style>
+        td {
+            border: 1px solid #333;
+        }
+        img{
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="username">Username: </label>
+    <input type="username" name="username" id="username">
+    <br>
+    <label for="password">Password: </label>
+    <input type="password" name="password" id="password">
+    <br>
+    <label for="nickname">Nickname: </label>
+    <input type="nickname" name="nickname" id="nickname">
+    <br>
+    <label for="avatar">Avatar: </label>
+    <input type="file" name="" id="avatar">
+    <br>
+    <img src="" alt="">
+    <br>
+    <button>Register</button>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+        const avatar = document.querySelector('#avatar');
+        const img = document.querySelector('img');
+        avatar.addEventListener('change', () => {
+            const file = avatar.files[0];
+            if (file) {
+                img.src = URL.createObjectURL(file);
+            }
+
+        })
+        const url = 'http://william.lee.idv.tw/member/register';
+        $('button').on("click", function () {
+            const fileReader = new FileReader();
+            fileReader.onload = event => {
+                const avatarBase64Str = btoa(event.target.result);
+
+                let username = $('#username').val();
+                let password = $('#password').val();
+                let nickname = $('#nickname').val();
+                // let photo = $('img').attr('src');
+                // console.log(photo);
+                let obj = {
+                    "username": username,
+                    "password": password,
+                    "nickname": nickname,
+                    "avatar": avatarBase64Str
+                };
+                // console.log(data);
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: obj,
+                })
+            };
+            fileReader.readAsBinaryString(avatar.files[0]);
+        });
+
+    </script>
+</body>
+
+</html>

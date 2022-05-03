@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    4.續Exercise11第01題
+        請在HTML加入一個<input type="number">，用來輸入 使用者ID
+        當此<inupt>的input事件發生時，須發出請求，說明如下..
+        請求網址: https://jsonplaceholder.typicode.com/todos?userId=欲顯示的使用者ID
+        請求方法: GET
+        回應本體格式(JSON)
+            {
+                "userId": 使用者ID,
+                "id": 序,
+                "title": "項目名稱",
+                "completed": 是否已完成
+            }
+-->
+
+<head>
+    <style>
+        .container {
+            width: 500px;
+            margin: 0 auto;
+            border-radius: 20px;
+            padding: 5px;
+        }
+
+        .border {
+            border: grey 1px solid;
+        }
+
+        .center {
+            text-align: center;
+            margin: 5px;
+        }
+
+        .todo-item {
+            margin: 5px;
+            padding: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .m-1 {
+            margin: 5px;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+        }
+
+        .isCompleted {
+            text-decoration: line-through;
+        }
+
+        input {
+            width: 440px;
+            height: 40px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="border container">
+        <div class="center">
+            <input type="number" id="userId">
+        </div>
+        <h2 class="center">TodoList</h2>
+        <div class="m-1">
+            <input type="text" placeholder=" I am going to do...">
+            <button class="circle" id="add-todo">➕</button>
+        </div>
+        <div id="todo-list">
+        </div>
+    </div>
+    <script>
+        const url = 'https://jsonplaceholder.typicode.com/todos?userId='
+        const userIdInput = document.querySelector('#userId');
+        userIdInput.addEventListener('input', () => {
+            fetch(`${url}${userIdInput.value}`)
+                .then(resp => resp.json())
+                .then(todos => {
+                    list.length = 0;
+                    for (let { id, title, completed } of todos) {
+                        list.push({
+                            id,
+                            title,
+                            completed
+                        });
+                    }
+                    render(list);
+                });
+        });
+
+        // TodoList的項目陣列
+        const list = [
+        ];
+        // 下一個項目的id
+        let nextId = list.length + 1;
+
+        render(list);
+
+        /**
+         * [顯示]列表中的項目
+         * @param {Array} list: 欲顯示的列表
+         */
+        function render(list) {
+            const todoList = document.querySelector('#todo-list')
+            todoList.innerHTML = '';
+            list.forEach((el, idx) => {
+                const div = document.createElement('div');
+                div.classList.add('border', 'todo-item');
+                div.id = `item-${el.id}`;
+                div.innerHTML = `
+                    <div>
+                        <span class="m-1">${idx + 1}.</span>
+                        <span id="title-${el.id}" class="title ${el.completed ? 'isCompleted' : ''}">${el.title}</span>
+                    </div>
+                    <div>
+                        <button id="delete-${el.id}" class="circle delete" onclick="deleteTodoItem(this)">❌</button>
+                        <button id="edit-${el.id}" class="circle edit" onclick="editTodoItem(this)">✏️</button>
+                        <button id="complete-${el.id}" class="circle isCompleted" onclick="completeTodoItem(this)">✔️</button>
+                    </div>
+                `;
+                todoList.append(div);
+            });
+        }
+
+        /**
+         * [刪除]列表中的項目
+         * @param {Object} item: 欲刪除的項目
+         */
+        function deleteTodoItem(item) {
+            const id = item.id.split('-')[1];
+            const index = list.findIndex(
+                el => el.id === +id
+            );
+            list.splice(index, 1);
+            render(list);
+        }
+
+        /**
+         * 改變項目成[可編輯狀態]
+         * @param {Object} item: 欲編輯的項目
+         */
+        function editTodoItem(item) {
+            const id = item.id.split('-')[1];
+            const titleToEdit = document.querySelector(`#title-${id}`);
+            titleToEdit.setAttribute('contenteditable', true);
+            titleToEdit.focus();
+            titleToEdit.addEventListener('blur', saveTitle);
+        }
+
+        /**
+         * [儲存]編輯完的項目
+         * @param {Event} event: 事件物件
+         */
+        function saveTitle(event) {
+            const id = event.target.id.split('-')[1];
+            const index = list.findIndex(el => el.id == id);
+            list[index].title = event.target.innerText;
+            render(list);
+        }
+
+        /**
+         * 將項目[標記成已完成]
+         * @param {Object} item: 欲被標記成已完成的項目
+         */
+        function completeTodoItem(item) {
+            const id = item.id.split('-')[1];
+            const index = list.findIndex(el => el.id == id);
+            if (list[index].completed) {
+                list[index].completed = false;
+            } else {
+                list[index].completed = true;
+            }
+            render(list);
+        }
+
+        /**
+         * 註冊 加入項目按鈕 的 click事件監聽器
+         * 加入項目至項目陣列中，並顯示
+         */
+        document.querySelector('#add-todo').addEventListener('click', () => {
+            const input = document.querySelector('input');
+            list.push({
+                id: nextId++,
+                title: input.value,
+                completed: false
+            });
+            input.value = '';
+            render(list);
+        });
+    </script>
+</body>
+
+</html>
